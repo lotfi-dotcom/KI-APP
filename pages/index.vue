@@ -308,6 +308,8 @@
   align-items: center;
 }
 
+
+
 .quantity-button {
   padding: 5px 10px;
   font-size: 1rem;
@@ -339,5 +341,63 @@
 .reminder-button {
   background-color: #ff9800;
   padding: 10px 20px;
+}
+
+/* Responsives Design */
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .input-container {
+    flex-direction: column;
+  }
+
+  .input, .category-select, .item-select, .button {
+    min-width: 100%;
+  }
+
+  .cart-icon {
+    font-size: 2.5rem;
+  }
+
+  .cart-counter {
+    font-size: 1.1rem;
+    padding: 4px 8px;
+  }
+
+  .shopping-list {
+    margin: 0;
+  }
+
+  .list-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .item-controls {
+    flex-direction: column;
+    margin-top: 10px;
+  }
+
+  .quantity-button, .quantity-input {
+    margin-bottom: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dark-mode-button {
+    font-size: 1.5rem;
+    padding: 10px;
+  }
+
+  .button, .quantity-button {
+    padding: 10px 18px;
+    font-size: 1rem;
+  }
+
+  .quantity-input {
+    width: 30px;
+  }
 }
 </style>
