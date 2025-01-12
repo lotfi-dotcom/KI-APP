@@ -2,12 +2,12 @@ version: "3.7"
 
 services:
   app:
-    # Der Service nutzt das Dockerfile, um das Image zu bauen
-    build: .
-    # Hier wird der Container-Name und Port zugewiesen
-    container_name: KI-APP
+    build: .  # Der Service nutzt das Dockerfile, um das Image zu bauen
+    container_name: einkaufsliste-app
     ports:
       - "3000:3000"   # Mappt den Container-Port auf den Host-Port
     volumes:
       - .:/app         # Bindet das Verzeichnis auf dem Host an den Container (optional)
+    environment:
+      - NODE_ENV=production  # Setze die Umgebungsvariable für die Produktion
     restart: always    # Der Container wird bei Bedarf automatisch neu gestartet
