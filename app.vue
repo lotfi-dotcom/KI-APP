@@ -1,6 +1,6 @@
 <template>
 
-    <!-- Globales Layout, z.B. Header, Footer -->
+  
 
   <div>
 
