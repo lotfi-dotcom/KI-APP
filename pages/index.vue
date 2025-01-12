@@ -255,7 +255,7 @@
 .button {
   padding: 10px 20px;
   font-size: 1rem;
-  background-color: #4caf50;
+  background-color: #23d329;
   color: white;
   border: none;
   cursor: pointer;
