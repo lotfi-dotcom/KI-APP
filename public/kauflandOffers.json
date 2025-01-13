@@ -1,0 +1,29 @@
+{
+    "offers": [
+      {
+        "id": 1,
+        "title": "Äpfel - 1 kg",
+        "price": "1.99",
+        "store": "Kaufland",
+        "category": "Obst",
+        "description": "Frische Äpfel, direkt aus der Region"
+      },
+      {
+        "id": 2,
+        "title": "Milch - 1L",
+        "price": "0.89",
+        "store": "Kaufland",
+        "category": "Milchprodukte",
+        "description": "Frische Vollmilch in praktischer 1L Packung"
+      },
+      {
+        "id": 3,
+        "title": "Karotten - 500g",
+        "price": "0.79",
+        "store": "Kaufland",
+        "category": "Gemüse",
+        "description": "Leckere Karotten, ideal für den Salat"
+      }
+    ]
+  }
+  

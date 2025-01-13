@@ -17,6 +17,14 @@
           <option value="Obst">Obst</option>
           <option value="Gemüse">Gemüse</option>
           <option value="Milchprodukte">Milchprodukte</option>
+          <option value="Getränke">Getränke</option>
+          <option value="Backwaren">Backwaren</option>
+          <option value="Fleisch">Fleisch</option>
+          <option value="Tiefkühlkost">Tiefkühlkost</option>
+          <option value="Süßigkeiten">Süßigkeiten</option>
+          <option value="Gewürze">Gewürze</option>
+          <option value="Konserven">Konserven</option>
+
           <!-- Weitere Optionen -->
         </select>
 
@@ -24,7 +32,7 @@
 
       <!-- Artikel Auswahl abhängig von der Kategorie -->
       <select v-if="availableItems.length > 0" v-model="newItem" class="item-select">
-        <option value="">Bitte wählen...</option>
+        <option :value="randomItem">{{ randomItem }}</option>
         <option v-for="item in availableItems" :key="item" :value="item">{{ item }}</option>
       </select>
 
@@ -32,11 +40,9 @@
         <button @click="startListening" class="button">🎙️ Spracherkennung starten</button>
       </div>
   
-      <!-- Suchfeld -->
-      <input v-model="searchQuery" type="text" placeholder="Artikel suchen..." class="search-input" />
   
-      <!-- Warenkorb-Übersicht -->
-       <!-- Warenkorb-Icon mit Artikelzähler -->
+      <input v-model="searchQuery" type="text" placeholder="Artikel suchen..." class="search-input" />
+
         <div class="cart-container">
         
         <div class="cart-icon">
@@ -74,17 +80,24 @@
   <script>
   export default {
     data() {
-      return {
+      return {  
         newItem: '', // Eingabefeld für den neuen Artikel
         newItemCategory: 'Obst', // Kategorie des neuen Artikels
-        shoppingList: [], // Die Liste der hinzugefügten Artikel
-        reminderTime: null, // Die Zeit für die Erinnerung
+        shoppingList: [],  // Die Liste der hinzugefügten Artikel  
+        reminderTime: null, // Die Zeit für die Erinnerung  
         searchQuery: '', // Suchfeld
         darkMode: false, // Dunkelmodus
         categories: {
           Obst: ['Äpfel', 'Bananen', 'Kirschen', 'Erdbeeren'],
           Gemüse: ['Karotten', 'Brokkoli', 'Tomaten', 'Paprika'],
           Milchprodukte: ['Milch', 'Käse', 'Joghurt', 'Butter'],
+          Getränke: ['Wasser', 'Cola', 'Bier', 'Wein'],
+          Backwaren: ['Brot', 'Brötchen', 'Croissants', 'Kuchen'],
+          Fleisch: ['Hähnchen', 'Rind', 'Schwein', 'Wurst'],
+          Tiefkühlkost: ['Pizza', 'Gemüsemix', 'Eis', 'Fischstäbchen'],
+          Süßigkeiten: ['Schokolade', 'Gummibärchen', 'Chips', 'Kekse'],
+          Gewürze: ['Salz', 'Pfeffer', 'Paprikapulver', 'Basilikum'],
+          Konserven: ['Tomaten', 'Mais', 'Thunfisch', 'Bohnen'],
         },
       };
     },
@@ -98,8 +111,16 @@
         );
       },
       availableItems() {
-        // Gibt eine Liste der Artikel zurück, die zur aktuell gewählten Kategorie passen
         return this.categories[this.newItemCategory] || [];
+      },
+      randomItem() {
+        // Fügen Sie newItemCategory als Abhängigkeit hinzu
+        const items = this.categories[this.newItemCategory] || [];
+        if (items.length > 0) {
+          const randomIndex = Math.floor(Math.random() * items.length);
+          return items[randomIndex];
+        }
+        return '';
       }
     },
     methods: {
@@ -152,7 +173,7 @@
       },
       setReminder() {
         const reminder = new Date();
-        reminder.setHours(13, 25, 0, 0);
+        reminder.setHours(12, 25, 0, 0);
         this.reminderTime = reminder;
         console.log(`Erinnerung gesetzt: ${reminder.getHours()}:${reminder.getMinutes()}`);
       },
@@ -168,9 +189,13 @@
         recognition.interimResults = false;
   
         recognition.onresult = (event) => {
-          const spokenWord = event.results[0][0].transcript.trim();
-          this.addItem(spokenWord);
-        };
+          if (event.results && event.results[0] && event.results[0][0]) {
+            const spokenWord = event.results[0][0].transcript.trim();
+            this.addItem(spokenWord);
+          } else {
+            console.log("No speech detected");
+          }
+        }; 
   
         recognition.onerror = (event) => {
           console.error("Spracherkennungsfehler:", event.error);
@@ -215,7 +240,7 @@
 
 .dark-mode {
   background-color: #2d2d2d;
-  color: #fff;
+  color: #94ac5d;
 }
 
 .dark-mode-button {
