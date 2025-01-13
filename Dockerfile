@@ -1,18 +1,20 @@
-# Build stage
-FROM node:20 as build-stage
+# Development stage
+FROM node:20
 
+# Set the working directory inside the container
 WORKDIR /usr/src/docker/ki-app
-COPY ./src/package*.json ./
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
 RUN npm install
-COPY ./src ./
-COPY ./docker/template.config.json ./_template/
 
-RUN npm run build
-RUN npm run generate
+# Copy the rest of the application files
+COPY . ./
 
-# Production stage
-FROM nginx:stable-alpine as production-stage
-COPY --from=build-stage /usr/src/docker/SC-Maschine/.output/public /usr/share/nginx/html
-COPY ./docker/nginx.conf /etc/nginx/nginx.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Expose the development server port (meist 3000 oder ähnlich, je nach Framework)
+EXPOSE 3000
+
+# Start the development server
+CMD ["npm", "run", "dev","nginx", "-g", "daemon off;"]
