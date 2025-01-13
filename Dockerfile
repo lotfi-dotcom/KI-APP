@@ -1,19 +1,18 @@
-# Verwenden Sie das offizielle Node.js-Image (aktualisierte Version für Nuxt 3)
-FROM node:16
+# Build stage
+FROM node:20 as build-stage
 
-# Erstellen Sie das Arbeitsverzeichnis im Container
-WORKDIR /app
-
-# Kopieren Sie package.json und installieren Sie die Abhängigkeiten
-COPY package.json /app
-COPY package-lock.json /app  
+WORKDIR /usr/src/docker/ki-app
+COPY ./src/package*.json ./
 RUN npm install
+COPY ./src ./
+COPY ./docker/template.config.json ./_template/
 
-# Kopiere den gesamten Code ins Containerverzeichnis
-COPY . /app
+RUN npm run build
+RUN npm run generate
 
-# Exponieren Sie den Port, auf dem Ihre App läuft (z.B. 3000 für Nuxt 3)
-EXPOSE 3000
-
-# Starten Sie die Anwendung im Entwicklungsmodus (Optional: für Entwicklungsmodus)
-CMD ["npm", "run", "dev"]
+# Production stage
+FROM nginx:stable-alpine as production-stage
+COPY --from=build-stage /usr/src/docker/SC-Maschine/.output/public /usr/share/nginx/html
+COPY ./docker/nginx.conf /etc/nginx/nginx.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

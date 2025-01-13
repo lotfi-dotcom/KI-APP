@@ -2,12 +2,15 @@ version: "3.7"
 
 services:
   app:
-    build: .  # Der Service nutzt das Dockerfile, um das Image zu bauen
+    build: 
+      context: .  # Der Build-Kontext ist das aktuelle Verzeichnis
+      dockerfile: Dockerfile  # Dockerfile wird hier angegeben
     container_name: einkaufsliste-app
     ports:
-      - "3000:3000"   # Mappt den Container-Port auf den Host-Port
-    volumes:
-      - .:/app         # Bindet das Verzeichnis auf dem Host an den Container (optional)
+      - "80:80"  # Mappt den Nginx-Port 80 im Container auf Port 80 des Hosts
     environment:
-      - NODE_ENV=production  # Setze die Umgebungsvariable für die Produktion
-    restart: always    # Der Container wird bei Bedarf automatisch neu gestartet
+      - NODE_ENV=production  # Setzt die Umgebungsvariable
+    volumes:
+      - ./src:/usr/src/docker/ki-app  # Bindet den Quellcode an den Container
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf  # Nginx-Konfiguration wird geladen
+    restart: always  # Container wird bei Fehler automatisch neu gestartet

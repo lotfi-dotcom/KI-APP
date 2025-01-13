@@ -172,11 +172,43 @@
         }
       },
       setReminder() {
-        const reminder = new Date();
-        reminder.setHours(12, 25, 0, 0);
-        this.reminderTime = reminder;
-        console.log(`Erinnerung gesetzt: ${reminder.getHours()}:${reminder.getMinutes()}`);
-      },
+          // Zeit für die Erinnerung setzen
+          const reminder = new Date();
+          reminder.setHours(12, 25, 0, 0);
+          this.reminderTime = reminder;
+
+          // Prüfen, ob Benachrichtigungen erlaubt sind
+          if (Notification.permission === "granted") {
+            this.scheduleNotification(reminder);
+          } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(permission => {
+              if (permission === "granted") {
+                this.scheduleNotification(reminder);
+              } else {
+                alert("Benachrichtigungen wurden nicht erlaubt.");
+              }
+            });
+          } else {
+            alert("Benachrichtigungen sind blockiert. Bitte aktivieren Sie diese in den Browsereinstellungen.");
+          }
+        },
+      scheduleNotification(reminderTime) {
+          const now = new Date();
+          const delay = reminderTime - now;
+
+          if (delay > 0) {
+            setTimeout(() => {
+              new Notification("Einkaufsliste", {
+                body: "Es ist Zeit, deine Einkaufsliste zu überprüfen!",
+                icon: "/path/to/icon.png" // Optional: Icon für die Benachrichtigung
+              });
+            }, delay);
+            console.log(`Erinnerung wird in ${Math.round(delay / 1000)} Sekunden ausgelöst.`);
+          } else {
+            alert("Die angegebene Zeit liegt in der Vergangenheit.");
+          }
+        },
+
       startListening() {
         if (!("webkitSpeechRecognition" in window)) {
           alert("Spracherkennung wird auf diesem Gerät nicht unterstützt.");
