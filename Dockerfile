@@ -16,5 +16,5 @@ COPY . ./
 # Expose the development server port (meist 3000 oder ähnlich, je nach Framework)
 EXPOSE 3000
 
-# Start the development server
-CMD ["npm", "run", "dev","nginx", "-g", "daemon off;"]
+# Start the development server with Nginx in the background
+CMD ["sh", "-c", "npm run dev & nginx -g 'daemon off;'"]
