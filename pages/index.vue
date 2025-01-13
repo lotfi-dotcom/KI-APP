@@ -280,7 +280,7 @@
 .button {
   padding: 10px 20px;
   font-size: 1rem;
-  background-color: #4caf50;
+  background-color: #48b84c;
   color: white;
   border: none;
   cursor: pointer;
